@@ -55,7 +55,6 @@ public class InstrumentItem extends Item {
    public void releaseUsing(ItemStack stack, World world, LivingEntity user, int duration) {
 	   if (!world.isClientSide) {
 		   for (MobEntity entity : user.level.getEntitiesOfClass(MobEntity.class, user.getBoundingBox().inflate(5), (e) -> entities.contains(e.getType()))) {
-			   System.out.println(entity);
 			   FollowHandler.processInteraction(world, user, entity, Hand.MAIN_HAND);
 		   }
 		   if (user instanceof PlayerEntity) ((PlayerEntity) user).awardStat(Stats.ITEM_USED.get(this));

@@ -23,7 +23,7 @@ public class Piper {
 	protected static Map<String, InstrumentItem> ITEMS = new HashMap<String, InstrumentItem>();
 
 	@SubscribeEvent
-	public static void onCommonSetup(FMLConstructModEvent event) {
+	public static void onModConstruction(FMLConstructModEvent event) {
 		ItemLoader.loadFiles();
 	}
 
