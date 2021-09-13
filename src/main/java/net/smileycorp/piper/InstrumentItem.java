@@ -18,6 +18,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.smileycorp.followme.common.FollowHandler;
@@ -28,6 +29,8 @@ import com.google.gson.JsonObject;
 public class InstrumentItem extends Item {
 
 	protected SoundEvent sound = null;
+	protected int cooldown = 30;
+	protected boolean shiny = false;
 	protected final List<EntityType<?>> entities = new ArrayList<EntityType<?>>();
 
 	private InstrumentItem(Properties props) {
@@ -37,6 +40,11 @@ public class InstrumentItem extends Item {
 	@Override
 	public UseAction getUseAnimation(ItemStack stack) {
 		return UseAction.BOW;
+	}
+
+	@Override
+	public boolean isFoil(ItemStack stack) {
+		return shiny || stack.isEnchanted();
 	}
 
 	@Override
@@ -53,33 +61,60 @@ public class InstrumentItem extends Item {
 
    @Override
    public void releaseUsing(ItemStack stack, World world, LivingEntity user, int duration) {
-	   if (!world.isClientSide) {
-		   for (MobEntity entity : user.level.getEntitiesOfClass(MobEntity.class, user.getBoundingBox().inflate(5), (e) -> entities.contains(e.getType()))) {
-			   FollowHandler.processInteraction(world, user, entity, Hand.MAIN_HAND);
+	   if (duration<=getUseDuration(stack)-20) {
+		   if (!world.isClientSide) {
+			   for (MobEntity entity : getFollowEntities(world, user)) {
+				  FollowHandler.processInteraction(world, user, entity, Hand.MAIN_HAND);
+			   }
+			   if (user instanceof PlayerEntity) {
+				   PlayerEntity player = (PlayerEntity) user;
+				   player.getCooldowns().addCooldown(this, cooldown);
+				   player.awardStat(Stats.ITEM_USED.get(this));
+			   }
+			   if (stack.isDamageableItem()) stack.hurtAndBreak(1, user, (e) -> e.broadcastBreakEvent(e.getUsedItemHand()));
+		   } else if (sound != null) {
+			   ClientHandler.playInstrument(user, sound);
 		   }
-		   if (user instanceof PlayerEntity) ((PlayerEntity) user).awardStat(Stats.ITEM_USED.get(this));
-	   } else if (sound != null) {
-		   world.playLocalSound(user.getX(), user.getY(), user.getZ(), sound, user.getSoundSource(), 0.5f, world.random.nextFloat(), true);
 	   }
    }
 
+   public List<MobEntity> getFollowEntities(World world, LivingEntity user) {
+	   return world.getEntitiesOfClass(MobEntity.class, user.getBoundingBox().inflate(5), (e) -> entities.contains(e.getType()) && e!=user);
+   }
+
+   public int getCooldown() {
+	   return cooldown;
+   }
+
+   public SoundEvent getSound() {
+	   return sound;
+   }
+
    public static InstrumentItem fromJson(String name, JsonObject json) {
-	Properties props = new Properties().stacksTo(1).tab(ItemGroup.TAB_TOOLS);
-	if (json.has("durability")) props.durability(JSONUtils.getAsInt(json, "durability"));
-	if (json.has("rarity")) {
-		Rarity rarity = Rarity.valueOf(JSONUtils.getAsString(json, "rarity"));
-		if (rarity!=null)props.rarity(rarity);
-	}
-	InstrumentItem item = new InstrumentItem(props);
-	if (json.has("sound")) item.sound = new SoundEvent(new ResourceLocation(JSONUtils.getAsString(json, "sound")));
-	if (json.has("entities")) {
-		for (JsonElement element : JSONUtils.getAsJsonArray(json, "entities")) {
-			ResourceLocation resource = new ResourceLocation(element.getAsString());
-			if (ForgeRegistries.ENTITIES.containsKey(resource)) item.entities.add(ForgeRegistries.ENTITIES.getValue(resource));
-		}
-	}
-	item.setRegistryName(ModDefinitions.getResource(name));
-	return item;
+	   Properties props = new Properties().stacksTo(1).tab(ItemGroup.TAB_TOOLS);
+	   if (json.has("durability")) props.durability(JSONUtils.getAsInt(json, "durability"));
+	   if (json.has("rarity")) {
+		   String value = JSONUtils.getAsString(json, "rarity").toUpperCase();
+		   try {
+			   Rarity rarity = Rarity.valueOf(value);
+			   props.rarity(rarity);
+		   } catch (Exception e) {
+			   TextFormatting format = TextFormatting.getByName(value);
+			   if (format != null) props.rarity(Rarity.create(value, format));
+		   }
+	   }
+	   InstrumentItem item = new InstrumentItem(props);
+	   if (json.has("sound")) item.sound = new SoundEvent(new ResourceLocation(JSONUtils.getAsString(json, "sound")));
+	   if (json.has("cooldown")) item.cooldown = JSONUtils.getAsInt(json, "cooldown");
+	   if (json.has("enchanted")) item.shiny = JSONUtils.getAsBoolean(json, "enchanted");
+	   if (json.has("entities")) {
+		   for (JsonElement element : JSONUtils.getAsJsonArray(json, "entities")) {
+			   ResourceLocation resource = new ResourceLocation(element.getAsString());
+			   if (ForgeRegistries.ENTITIES.containsKey(resource)) item.entities.add(ForgeRegistries.ENTITIES.getValue(resource));
+		   }
+	   }
+	   item.setRegistryName(ModDefinitions.getResource(name));
+	   return item;
    }
 
 }
