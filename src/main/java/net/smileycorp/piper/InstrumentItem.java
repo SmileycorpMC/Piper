@@ -34,6 +34,7 @@ public class InstrumentItem extends Item {
 	protected int cooldown = 30;
 	protected float radius = 5f;
 	protected boolean shiny = false;
+	protected final List<ResourceLocation> entitiesBuilder = new ArrayList<ResourceLocation>();
 	protected final List<EntityType<?>> entities = new ArrayList<EntityType<?>>();
 
 	private InstrumentItem(Properties props) {
@@ -101,6 +102,13 @@ public class InstrumentItem extends Item {
 	   return sound;
    }
 
+   public void buildEntities() {
+	   entities.clear();
+	   for (ResourceLocation resource : entitiesBuilder) {
+		   if (ForgeRegistries.ENTITIES.containsKey(resource)) entities.add(ForgeRegistries.ENTITIES.getValue(resource));
+	   }
+   }
+
    public static InstrumentItem fromJson(String name, JsonObject json) {
 	   Properties props = new Properties().stacksTo(1).tab(ItemGroup.TAB_TOOLS);
 	   if (json.has("durability")) props.durability(JSONUtils.getAsInt(json, "durability"));
@@ -122,7 +130,7 @@ public class InstrumentItem extends Item {
 	   if (json.has("entities")) {
 		   for (JsonElement element : JSONUtils.getAsJsonArray(json, "entities")) {
 			   ResourceLocation resource = new ResourceLocation(element.getAsString());
-			   if (ForgeRegistries.ENTITIES.containsKey(resource)) item.entities.add(ForgeRegistries.ENTITIES.getValue(resource));
+			   if (ForgeRegistries.ENTITIES.containsKey(resource)) item.entitiesBuilder.add(resource);
 		   }
 	   }
 	   item.setRegistryName(ModDefinitions.getResource(name));

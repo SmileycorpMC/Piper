@@ -4,9 +4,9 @@ license="GNU LESSER GENERAL PUBLIC LICENSE Version 2.1"
 
 [[mods]]
 modId="piper"
-version="1.1.2"
+version="1.1.2a"
 displayName="Piper"
-displayURL="https://www.curseforge.com/minecraft/mc-mods/follow-me"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/piper"
 updateJSONURL=""
 credits="Smileycorp"
 authors="bstylia14 for the original mod concept and for providing ideas during development."
