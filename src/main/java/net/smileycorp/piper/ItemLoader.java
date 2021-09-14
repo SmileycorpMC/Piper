@@ -6,14 +6,14 @@ import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 
-import net.minecraftforge.fml.loading.FMLLoader;
-import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.fml.loading.moddiscovery.ModFile;
-
 import org.apache.commons.io.FileUtils;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.fml.loading.moddiscovery.ModFile;
 
 public class ItemLoader {
 
@@ -44,7 +44,7 @@ public class ItemLoader {
 		reader.lines().forEach((s)->builder.append(s));
 		reader.close();
 		JsonObject json = new JsonParser().parse(builder.toString()).getAsJsonObject();
-		Piper.ITEMS.put(name.split("\\.")[0], InstrumentItem.fromJson(name, json));
+		Piper.ITEMS.put(name.split("\\.")[0], Instrument.fromJson(name, json));
 	}
 
 	private static void createDefaultFiles(File directory) throws Exception {
@@ -64,7 +64,7 @@ public class ItemLoader {
 		File output = new File(directory, path);
 		File dir = output.getParentFile();
 		if (dir!=null)dir.mkdirs();
-		FileUtils.copyInputStreamToFile(Files.newInputStream(mod.getLocator().findPath(mod, "config-defaults/"+path), StandardOpenOption.READ), new File(directory, path));
+		FileUtils.copyInputStreamToFile(Files.newInputStream(mod.findResource("config-defaults/"+path), StandardOpenOption.READ), new File(directory, path));
 	}
 
 }

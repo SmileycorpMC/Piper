@@ -15,13 +15,13 @@ description="An optional addon to Follow Me, adds an item to make mobs follow yo
 [[dependencies.piper]]
     modId="atlaslib"
     mandatory=true
-    versionRange="[1.1.2,)"
+    versionRange="[1.1.3,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.piper]]
     modId="followme"
     mandatory=true
-    versionRange="[1.1.6a,)"
+    versionRange="[1.1.6,)"
     ordering="NONE"
     side="BOTH"
