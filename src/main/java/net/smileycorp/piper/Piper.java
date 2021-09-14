@@ -42,6 +42,9 @@ public class Piper {
 	@CapabilityInject(IMusician.class)
 	public static Capability<IMusician> MUSICIAN_CAPABILITY = null;
 
+	@CapabilityInject(IInstrument.class)
+	public static Capability<IInstrument> INSTRUMENT_CAPABILITY = null;
+
 	@SubscribeEvent
 	public static void onModConstruction(FMLConstructModEvent event) {
 		ItemLoader.loadFiles();
@@ -52,6 +55,7 @@ public class Piper {
 	@SubscribeEvent
 	public static void onModConstruction(FMLCommonSetupEvent event) {
 		CapabilityManager.INSTANCE.register(IMusician.class, new IMusician.Storage(), () -> new IMusician.Implementation());
+		CapabilityManager.INSTANCE.register(IInstrument.class, new IInstrument.Storage(), () -> new IInstrument.Implementation());
 	}
 
 	@SubscribeEvent
@@ -61,10 +65,18 @@ public class Piper {
 	}
 
 	@SubscribeEvent
-	public void attachCapabilities(AttachCapabilitiesEvent<Entity> event) {
+	public void attachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
 		Entity entity = event.getObject();
 		if (entity instanceof MobEntity) {
-			event.addCapability(ModDefinitions.getResource("piper"), new IMusician.Provider((MobEntity)entity));
+			event.addCapability(ModDefinitions.getResource("musician"), new IMusician.Provider((MobEntity)entity));
+		}
+	}
+
+	@SubscribeEvent
+	public void attachStackCapabilities(AttachCapabilitiesEvent<ItemStack> event) {
+		ItemStack stack = event.getObject();
+		if (stack.getItem() instanceof InstrumentItem) {
+			event.addCapability(ModDefinitions.getResource("instrument"), new IInstrument.Provider());
 		}
 	}
 

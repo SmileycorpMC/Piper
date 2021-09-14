@@ -18,8 +18,10 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.smileycorp.followme.common.FollowHandler;
 
@@ -30,6 +32,7 @@ public class InstrumentItem extends Item {
 
 	protected SoundEvent sound = null;
 	protected int cooldown = 30;
+	protected float radius = 5f;
 	protected boolean shiny = false;
 	protected final List<EntityType<?>> entities = new ArrayList<EntityType<?>>();
 
@@ -63,8 +66,15 @@ public class InstrumentItem extends Item {
    public void releaseUsing(ItemStack stack, World world, LivingEntity user, int duration) {
 	   if (duration<=getUseDuration(stack)-20) {
 		   if (!world.isClientSide) {
-			   for (MobEntity entity : getFollowEntities(world, user)) {
-				  FollowHandler.processInteraction(world, user, entity, Hand.MAIN_HAND);
+			   LazyOptional<IInstrument> optional = stack.getCapability(Piper.INSTRUMENT_CAPABILITY);
+			   if (optional.isPresent()) {
+				   IInstrument cap = optional.resolve().get();
+				   if (cap.hasFollowers()) cap.removeAllFollowers();
+				   else {
+					   for (MobEntity entity : getFollowEntities(world, user)) {
+						   if (FollowHandler.processInteraction(world, user, entity, Hand.MAIN_HAND)) cap.addFollower(entity);
+					   }
+				   }
 			   }
 			   if (user instanceof PlayerEntity) {
 				   PlayerEntity player = (PlayerEntity) user;
@@ -79,7 +89,8 @@ public class InstrumentItem extends Item {
    }
 
    public List<MobEntity> getFollowEntities(World world, LivingEntity user) {
-	   return world.getEntitiesOfClass(MobEntity.class, user.getBoundingBox().inflate(5), (e) -> entities.contains(e.getType()) && e!=user);
+	   AxisAlignedBB hitbox = new AxisAlignedBB(user.getX() - radius, user.getY() - radius, user.getZ() - radius, user.getX() + radius, user.getY() + radius, user.getZ() + radius);
+	   return world.getEntitiesOfClass(MobEntity.class, hitbox, (e) -> entities.contains(e.getType()) && e!=user);
    }
 
    public int getCooldown() {
@@ -106,6 +117,7 @@ public class InstrumentItem extends Item {
 	   InstrumentItem item = new InstrumentItem(props);
 	   if (json.has("sound")) item.sound = new SoundEvent(new ResourceLocation(JSONUtils.getAsString(json, "sound")));
 	   if (json.has("cooldown")) item.cooldown = JSONUtils.getAsInt(json, "cooldown");
+	   if (json.has("radius")) item.radius = JSONUtils.getAsFloat(json, "radius");
 	   if (json.has("enchanted")) item.shiny = JSONUtils.getAsBoolean(json, "enchanted");
 	   if (json.has("entities")) {
 		   for (JsonElement element : JSONUtils.getAsJsonArray(json, "entities")) {
