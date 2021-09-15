@@ -24,7 +24,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.smileycorp.followme.common.FollowHandler;
@@ -59,13 +58,8 @@ public class Piper {
 	public static void modSetup(FMLCommonSetupEvent event) {
 		CapabilityManager.INSTANCE.register(IMusician.class, new IMusician.Storage(), () -> new IMusician.Implementation());
 		CapabilityManager.INSTANCE.register(IInstrument.class, new IInstrument.Storage(), () -> new IInstrument.Implementation());
-	}
-
-	@SubscribeEvent
-	public static void modLoadEnd(FMLLoadCompleteEvent event) {
 		for (InstrumentItem item : ITEMS.values()) item.buildEntities();
 	}
-
 
 	@SubscribeEvent
 	public static void registerItems(Register<Item> event) {

@@ -5,7 +5,7 @@
 	"1.1.1": "entities holding instruments will now use them",
 	"1.1.2": "added radius property and madeinstruments now toggle following per item rather than per target",
 	"1.1.2a": "added case to catch modded mobs in instrument whitelists",
-	"1.1.2b": "move case to catch modded entities to run later, fixed crash with null pointer in capabilities"
+	"1.1.2b": "fixed errors in modded mob case and made instrument sounds tied to the user"
   },
   "promos": {
     "1.16.5-latest": "1.1.2b",

@@ -2,7 +2,7 @@ package net.smileycorp.piper;
 
 import java.io.IOException;
 
-import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
@@ -38,8 +38,8 @@ public class PacketHandler {
 			private int entity;
 			private String item;
 
-			public InstrumentMessage(MobEntity entity, InstrumentItem item) {
-				this.entity = entity.getId();
+			public InstrumentMessage(LivingEntity user, InstrumentItem item) {
+				this.entity = user.getId();
 				this.item = item.getRegistryName().getPath();
 			}
 
@@ -55,8 +55,8 @@ public class PacketHandler {
 				buf.writeUtf(item);
 			}
 
-			public MobEntity getEntity(World world) {
-				return (MobEntity) world.getEntity(entity);
+			public LivingEntity getEntity(World world) {
+				return (LivingEntity) world.getEntity(entity);
 			}
 
 			public SoundEvent getSound() {

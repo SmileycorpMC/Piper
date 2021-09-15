@@ -21,7 +21,9 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.smileycorp.followme.common.FollowHandler;
 import net.smileycorp.piper.capability.IInstrument;
@@ -84,8 +86,8 @@ public class InstrumentItem extends Item {
 				   player.awardStat(Stats.ITEM_USED.get(this));
 			   }
 			   if (stack.isDamageableItem()) stack.hurtAndBreak(1, user, (e) -> e.broadcastBreakEvent(e.getUsedItemHand()));
-		   } else if (sound != null) {
-			   ClientHandler.playInstrument(user, sound);
+			   PacketHandler.NETWORK_INSTANCE.send(PacketDistributor.TRACKING_CHUNK.with(
+						()->(Chunk)world.getChunk(user.blockPosition())), new PacketHandler.InstrumentMessage(user, this));
 		   }
 	   }
    }
@@ -104,7 +106,6 @@ public class InstrumentItem extends Item {
    }
 
    public void buildEntities() {
-	   entities.clear();
 	   for (ResourceLocation resource : entitiesBuilder) {
 		   if (ForgeRegistries.ENTITIES.containsKey(resource)) entities.add(ForgeRegistries.ENTITIES.getValue(resource));
 	   }
@@ -131,7 +132,7 @@ public class InstrumentItem extends Item {
 	   if (json.has("entities")) {
 		   for (JsonElement element : JSONUtils.getAsJsonArray(json, "entities")) {
 			   ResourceLocation resource = new ResourceLocation(element.getAsString());
-			   if (ForgeRegistries.ENTITIES.containsKey(resource)) item.entitiesBuilder.add(resource);
+			   item.entitiesBuilder.add(resource);
 		   }
 	   }
 	   item.setRegistryName(ModDefinitions.getResource(name));
