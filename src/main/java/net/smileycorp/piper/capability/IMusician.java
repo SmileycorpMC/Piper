@@ -1,4 +1,4 @@
-package net.smileycorp.piper;
+package net.smileycorp.piper.capability;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
+import net.smileycorp.piper.Piper;
 
 public interface IMusician {
 
@@ -95,7 +96,7 @@ public interface IMusician {
 
 		@Override
 		public void addFollower(MobEntity entity) {
-			followers.add(entity);
+			if (entity!=null)followers.add(entity);
 		}
 
 		@Override
@@ -111,7 +112,7 @@ public interface IMusician {
 		@Override
 		public ListNBT writeNBT(ListNBT nbt) {
 			for (MobEntity entity : followers) {
-				nbt.add(IntNBT.valueOf(entity.getId()));
+				if (entity!=null)nbt.add(IntNBT.valueOf(entity.getId()));
 			}
 			return nbt;
 		}

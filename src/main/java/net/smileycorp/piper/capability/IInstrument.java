@@ -1,4 +1,4 @@
-package net.smileycorp.piper;
+package net.smileycorp.piper.capability;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +16,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import net.smileycorp.followme.common.FollowHandler;
 import net.smileycorp.followme.common.ai.FollowUserGoal;
+import net.smileycorp.piper.Piper;
 
 public interface IInstrument {
 
@@ -54,14 +55,16 @@ public interface IInstrument {
 
 		@Override
 		public void addFollower(MobEntity entity) {
-			followers.add(entity);
+			if (entity!=null)followers.add(entity);
 		}
 
 		@Override
 		public void removeAllFollowers() {
 			for (MobEntity entity : followers) {
-				for (PrioritizedGoal entry : entity.goalSelector.getRunningGoals().toArray(PrioritizedGoal[]::new)) {
-					if (entry.getGoal() instanceof FollowUserGoal) FollowHandler.removeAI((FollowUserGoal) entry.getGoal());
+				if (entity!=null) {
+					for (PrioritizedGoal entry : entity.goalSelector.getRunningGoals().toArray(PrioritizedGoal[]::new)) {
+						if (entry.getGoal() instanceof FollowUserGoal) FollowHandler.removeAI((FollowUserGoal) entry.getGoal());
+					}
 				}
 			}
 			followers.clear();
@@ -70,7 +73,7 @@ public interface IInstrument {
 		@Override
 		public ListNBT writeNBT(ListNBT nbt) {
 			for (MobEntity entity : followers) {
-				nbt.add(IntNBT.valueOf(entity.getId()));
+				if (entity!=null)nbt.add(IntNBT.valueOf(entity.getId()));
 			}
 			return nbt;
 		}

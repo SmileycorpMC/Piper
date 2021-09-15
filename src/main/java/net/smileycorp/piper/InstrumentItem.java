@@ -24,6 +24,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.smileycorp.followme.common.FollowHandler;
+import net.smileycorp.piper.capability.IInstrument;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

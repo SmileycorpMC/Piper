@@ -28,6 +28,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.smileycorp.followme.common.FollowHandler;
+import net.smileycorp.piper.capability.IInstrument;
+import net.smileycorp.piper.capability.IMusician;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
