@@ -1,0 +1,14 @@
+{
+  "mappings": {
+    "net/smileycorp/piper/mixin/MixinPackRepository": {
+      "openAllSelected()Ljava/util/List;": "Lnet/minecraft/server/packs/repository/PackRepository;m_10525_()Ljava/util/List;"
+    }
+  },
+  "data": {
+    "searge": {
+      "net/smileycorp/piper/mixin/MixinPackRepository": {
+        "openAllSelected()Ljava/util/List;": "Lnet/minecraft/server/packs/repository/PackRepository;m_10525_()Ljava/util/List;"
+      }
+    }
+  }
+}
