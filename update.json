@@ -1,0 +1,10 @@
+{
+  "homepage": "https://www.curseforge.com/minecraft/mc-mods/piper",
+  "1.17.1": {
+	"1.1.2": "first version for 1.17.1"
+  },
+  "promos": {
+    "1.17.1-latest": "1.1.2",
+    "1.17.1-recommended": "1.1.2"
+  }
+}

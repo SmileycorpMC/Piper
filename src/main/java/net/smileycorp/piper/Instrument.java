@@ -23,8 +23,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.smileycorp.followme.common.FollowHandler;
 import net.smileycorp.piper.capability.IInstrument;
@@ -84,8 +86,8 @@ public class Instrument extends Item {
 				   player.awardStat(Stats.ITEM_USED.get(this));
 			   }
 			   if (stack.isDamageableItem()) stack.hurtAndBreak(1, user, (e) -> e.broadcastBreakEvent(e.getUsedItemHand()));
-		   } else if (sound != null) {
-			   ClientHandler.playInstrument(user, sound);
+			   PacketHandler.NETWORK_INSTANCE.send(PacketDistributor.TRACKING_CHUNK.with(
+						()->(LevelChunk)level.getChunk(user.blockPosition())),new PacketHandler.InstrumentMessage(user, this));
 		   }
 	   }
    }
@@ -131,7 +133,7 @@ public class Instrument extends Item {
 	   if (json.has("entities")) {
 		   for (JsonElement element : GsonHelper.getAsJsonArray(json, "entities")) {
 			   ResourceLocation resource = new ResourceLocation(element.getAsString());
-			   if (ForgeRegistries.ENTITIES.containsKey(resource)) item.entitiesBuilder.add(resource);
+			   item.entitiesBuilder.add(resource);
 		   }
 	   }
 	   item.setRegistryName(ModDefinitions.getResource(name));

@@ -108,7 +108,7 @@ public class Piper {
 							}
 							if (playInstrument) {
 								PacketHandler.NETWORK_INSTANCE.send(PacketDistributor.TRACKING_CHUNK.with(
-										()->(LevelChunk)level.getChunk(entity.blockPosition())),new PacketHandler.InstrumentMessage((Mob) entity, item));
+										()->(LevelChunk)level.getChunk(entity.blockPosition())),new PacketHandler.InstrumentMessage(entity, item));
 							}
 							if (cap.getTarget()!=target) cap.setTarget(target);
 						}

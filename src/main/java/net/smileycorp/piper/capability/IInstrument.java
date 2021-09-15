@@ -40,23 +40,25 @@ public interface IInstrument {
 
 		@Override
 		public void addFollower(Mob entity) {
-			followers.add(entity);
+			if (entity!=null) followers.add(entity);
 		}
 
 		@Override
 		public void removeAllFollowers() {
 			for (Mob entity : followers) {
-				for (WrappedGoal entry : entity.goalSelector.getRunningGoals().toArray(WrappedGoal[]::new)) {
-					if (entry.getGoal() instanceof FollowUserGoal) FollowHandler.removeAI((FollowUserGoal) entry.getGoal());
+				if (entity!=null) {
+					for (WrappedGoal entry : entity.goalSelector.getRunningGoals().toArray(WrappedGoal[]::new)) {
+						if (entry.getGoal() instanceof FollowUserGoal) FollowHandler.removeAI((FollowUserGoal) entry.getGoal());
+					}
 				}
+				followers.clear();
 			}
-			followers.clear();
 		}
 
 		@Override
 		public ListTag writeNBT(ListTag nbt) {
 			for (Mob entity : followers) {
-				nbt.add(IntTag.valueOf(entity.getId()));
+				if (entity!=null) nbt.add(IntTag.valueOf(entity.getId()));
 			}
 			return nbt;
 		}

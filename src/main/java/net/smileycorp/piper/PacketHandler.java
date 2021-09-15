@@ -3,7 +3,7 @@ package net.smileycorp.piper;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
@@ -36,7 +36,7 @@ public class PacketHandler {
 			private int entity;
 			private String item;
 
-			public InstrumentMessage(Mob entity, Instrument item) {
+			public InstrumentMessage(LivingEntity entity, Instrument item) {
 				this.entity = entity.getId();
 				this.item = item.getRegistryName().getPath();
 			}
@@ -53,8 +53,8 @@ public class PacketHandler {
 				buf.writeUtf(item);
 			}
 
-			public Mob getEntity(Level level) {
-				return (Mob) level.getEntity(entity);
+			public LivingEntity getEntity(Level level) {
+				return (LivingEntity) level.getEntity(entity);
 			}
 
 			public SoundEvent getSound() {

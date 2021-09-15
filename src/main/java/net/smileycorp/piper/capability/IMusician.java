@@ -81,7 +81,7 @@ public interface IMusician {
 
 		@Override
 		public void addFollower(Mob entity) {
-			followers.add(entity);
+			if (entity!=null) followers.add(entity);
 		}
 
 		@Override
@@ -97,7 +97,7 @@ public interface IMusician {
 		@Override
 		public ListTag writeNBT(ListTag nbt) {
 			for (Mob entity : followers) {
-				nbt.add(IntTag.valueOf(entity.getId()));
+				if (entity!=null) nbt.add(IntTag.valueOf(entity.getId()));
 			}
 			return nbt;
 		}
