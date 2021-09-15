@@ -15,14 +15,16 @@ import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 @Mixin(PackRepository.class)
-public class MixinResourcePackList {
+public class MixinPackRepository {
 
 	@Inject(at = @At("TAIL"), method = "openAllSelected()Ljava/util/List;", cancellable = true)
-	private void createFullReload(CallbackInfoReturnable<List<PackResources>> callback) {
+	private void openAllSelected(CallbackInfoReturnable<List<PackResources>> callback) {
 		List<PackResources> packs = new ArrayList<PackResources>();
 		packs.addAll(callback.getReturnValue());
 		File pack = FMLPaths.GAMEDIR.get().resolve("config").resolve("piper").resolve("resources").toFile();
+		System.out.println(pack);
 		packs.add(new FolderPackResources(pack));
+		System.out.println(packs);
 		callback.setReturnValue(packs);
 	}
 

@@ -1,10 +1,10 @@
 {
 	"required": true,
 	"package": "net.smileycorp.piper.mixin",
-	"compatibilityLevel": "JAVA_8",
+	"compatibilityLevel": "JAVA_16",
 	"refmap": "piper.refmap.json",
 	"mixins": [
-		"MixinResourcePackList"
+		"MixinPackRepository"
 	],
 	"minVersion": "0.8"
 }
