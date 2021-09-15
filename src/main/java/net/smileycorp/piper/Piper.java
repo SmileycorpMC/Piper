@@ -60,6 +60,7 @@ public class Piper {
 	public static void onModConstruction(FMLCommonSetupEvent event) {
 		CapabilityManager.INSTANCE.register(IMusician.class);
 		CapabilityManager.INSTANCE.register(IInstrument.class);
+		for (Instrument item : ITEMS.values()) item.buildEntities(); 
 	}
 
 	@SubscribeEvent
