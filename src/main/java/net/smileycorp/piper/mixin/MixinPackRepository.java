@@ -22,9 +22,7 @@ public class MixinPackRepository {
 		List<PackResources> packs = new ArrayList<PackResources>();
 		packs.addAll(callback.getReturnValue());
 		File pack = FMLPaths.GAMEDIR.get().resolve("config").resolve("piper").resolve("resources").toFile();
-		System.out.println(pack);
 		packs.add(new FolderPackResources(pack));
-		System.out.println(packs);
 		callback.setReturnValue(packs);
 	}
 
