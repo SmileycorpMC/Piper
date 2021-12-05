@@ -7,9 +7,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fmllegacy.network.NetworkEvent.Context;
-import net.minecraftforge.fmllegacy.network.NetworkRegistry;
-import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
+import net.minecraftforge.network.NetworkEvent.Context;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.simple.SimpleChannel;
 import net.smileycorp.atlas.api.network.SimpleAbstractMessage;
 import net.smileycorp.atlas.api.network.SimpleMessageDecoder;
 import net.smileycorp.atlas.api.network.SimpleMessageEncoder;
@@ -31,38 +31,38 @@ public class PacketHandler {
 
 	public static class InstrumentMessage extends SimpleAbstractMessage {
 
-			public InstrumentMessage() {}
+		public InstrumentMessage() {}
 
-			private int entity;
-			private String item;
+		private int entity;
+		private String item;
 
-			public InstrumentMessage(LivingEntity entity, Instrument item) {
-				this.entity = entity.getId();
-				this.item = item.getRegistryName().getPath();
-			}
+		public InstrumentMessage(LivingEntity entity, Instrument item) {
+			this.entity = entity.getId();
+			this.item = item.getRegistryName().getPath();
+		}
 
-			@Override
-			public void read(FriendlyByteBuf buf) {
-				entity = buf.readInt();
-				item = buf.readUtf();
-			}
+		@Override
+		public void read(FriendlyByteBuf buf) {
+			entity = buf.readInt();
+			item = buf.readUtf();
+		}
 
-			@Override
-			public void write(FriendlyByteBuf buf) {
-				buf.writeInt(entity);
-				buf.writeUtf(item);
-			}
+		@Override
+		public void write(FriendlyByteBuf buf) {
+			buf.writeInt(entity);
+			buf.writeUtf(item);
+		}
 
-			public LivingEntity getEntity(Level level) {
-				return (LivingEntity) level.getEntity(entity);
-			}
+		public LivingEntity getEntity(Level level) {
+			return (LivingEntity) level.getEntity(entity);
+		}
 
-			public SoundEvent getSound() {
-				return Piper.ITEMS.containsKey(item) ? Piper.ITEMS.get(item).getSound() : null;
-			}
+		public SoundEvent getSound() {
+			return Piper.ITEMS.containsKey(item) ? Piper.ITEMS.get(item).getSound() : null;
+		}
 
-			@Override
-			public void handle(PacketListener handler) {}
+		@Override
+		public void handle(PacketListener handler) {}
 
 	}
 }

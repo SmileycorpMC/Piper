@@ -43,7 +43,7 @@ public class ItemLoader {
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		reader.lines().forEach((s)->builder.append(s));
 		reader.close();
-		JsonObject json = new JsonParser().parse(builder.toString()).getAsJsonObject();
+		JsonObject json = JsonParser.parseString(builder.toString()).getAsJsonObject();
 		Piper.ITEMS.put(name.split("\\.")[0], Instrument.fromJson(name, json));
 	}
 

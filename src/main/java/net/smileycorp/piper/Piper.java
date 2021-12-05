@@ -17,8 +17,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
@@ -27,7 +28,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.smileycorp.followme.common.FollowHandler;
 import net.smileycorp.piper.capability.IInstrument;
@@ -41,11 +42,9 @@ public class Piper {
 
 	protected static final Map<String, Instrument> ITEMS = new HashMap<String, Instrument>();
 
-	@CapabilityInject(IMusician.class)
-	public static Capability<IMusician> MUSICIAN_CAPABILITY = null;
+	public static Capability<IMusician> MUSICIAN_CAPABILITY = CapabilityManager.get(new CapabilityToken<IMusician>(){});
 
-	@CapabilityInject(IInstrument.class)
-	public static Capability<IInstrument> INSTRUMENT_CAPABILITY = null;
+	public static Capability<IInstrument> INSTRUMENT_CAPABILITY = CapabilityManager.get(new CapabilityToken<IInstrument>(){});
 
 	@SubscribeEvent
 	public static void onModConstruction(FMLConstructModEvent event) {
@@ -54,19 +53,22 @@ public class Piper {
 		MinecraftForge.EVENT_BUS.register(new Piper());
 	}
 
-	
+
 	@SubscribeEvent
-	@SuppressWarnings("removal")
 	public static void onModConstruction(FMLCommonSetupEvent event) {
-		CapabilityManager.INSTANCE.register(IMusician.class);
-		CapabilityManager.INSTANCE.register(IInstrument.class);
-		for (Instrument item : ITEMS.values()) item.buildEntities(); 
+		for (Instrument item : ITEMS.values()) item.buildEntities();
 	}
 
 	@SubscribeEvent
 	public static void registerItems(Register<Item> event) {
 		IForgeRegistry<Item> registry = event.getRegistry();
 		for (Item item : ITEMS.values()) registry.register(item);
+	}
+
+	@SubscribeEvent
+	public void registerCapabilities(RegisterCapabilitiesEvent event) {
+		event.register(IMusician.class);
+		event.register(IInstrument.class);
 	}
 
 	@SubscribeEvent

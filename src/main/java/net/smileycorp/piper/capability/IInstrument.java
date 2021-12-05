@@ -1,7 +1,9 @@
 package net.smileycorp.piper.capability;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.IntTag;
@@ -12,7 +14,7 @@ import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import net.smileycorp.followme.common.FollowHandler;
 import net.smileycorp.followme.common.ai.FollowUserGoal;
 import net.smileycorp.piper.Piper;
@@ -45,14 +47,16 @@ public interface IInstrument {
 
 		@Override
 		public void removeAllFollowers() {
+			Set<FollowUserGoal> toRemove = new HashSet<FollowUserGoal>();
 			for (Mob entity : followers) {
 				if (entity!=null) {
 					for (WrappedGoal entry : entity.goalSelector.getRunningGoals().toArray(WrappedGoal[]::new)) {
-						if (entry.getGoal() instanceof FollowUserGoal) FollowHandler.removeAI((FollowUserGoal) entry.getGoal());
+						if (entry.getGoal() instanceof FollowUserGoal) toRemove.add((FollowUserGoal) entry.getGoal());
 					}
 				}
-				followers.clear();
 			}
+			followers.clear();
+			for (FollowUserGoal goal : toRemove) FollowHandler.removeAI(goal);
 		}
 
 		@Override
