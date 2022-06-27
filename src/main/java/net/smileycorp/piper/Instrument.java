@@ -39,9 +39,11 @@ public class Instrument extends Item {
 	protected boolean shiny = false;
 	protected final List<EntityType<?>> entities = new ArrayList<EntityType<?>>();
 	protected final List<ResourceLocation> entitiesBuilder = new ArrayList<ResourceLocation>();
+	protected final ResourceLocation name;
 
-	private Instrument(Properties props) {
+	private Instrument(Properties props, ResourceLocation name) {
 		super(props);
+		this.name = name;
 	}
 
 	@Override
@@ -112,6 +114,10 @@ public class Instrument extends Item {
 		}
 	}
 
+	public ResourceLocation getInstrumentName() {
+		return name;
+	}
+
 	public static Instrument fromJson(String name, JsonObject json) {
 		Properties props = new Properties().stacksTo(1).tab(CreativeModeTab.TAB_TOOLS);
 		if (json.has("durability")) props.durability(GsonHelper.getAsInt(json, "durability"));
@@ -125,7 +131,7 @@ public class Instrument extends Item {
 				if (format != null) props.rarity(Rarity.create(value, format));
 			}
 		}
-		Instrument item = new Instrument(props);
+		Instrument item = new Instrument(props, ModDefinitions.getResource(name));
 		if (json.has("sound")) item.sound = new SoundEvent(new ResourceLocation(GsonHelper.getAsString(json, "sound")));
 		if (json.has("cooldown")) item.cooldown = GsonHelper.getAsInt(json, "cooldown");
 		if (json.has("radius")) item.radius = GsonHelper.getAsFloat(json, "radius");
@@ -136,7 +142,6 @@ public class Instrument extends Item {
 				item.entitiesBuilder.add(resource);
 			}
 		}
-		item.setRegistryName(ModDefinitions.getResource(name));
 		return item;
 	}
 

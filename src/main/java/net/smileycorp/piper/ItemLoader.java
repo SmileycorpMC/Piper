@@ -44,7 +44,7 @@ public class ItemLoader {
 		reader.lines().forEach((s)->builder.append(s));
 		reader.close();
 		JsonObject json = JsonParser.parseString(builder.toString()).getAsJsonObject();
-		Piper.ITEMS.put(name.split("\\.")[0], Instrument.fromJson(name, json));
+		InstrumentRegistry.register(name.split("\\.")[0], () -> Instrument.fromJson(name, json));
 	}
 
 	private static void createDefaultFiles(File directory) throws Exception {

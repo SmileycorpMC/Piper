@@ -38,7 +38,7 @@ public class PacketHandler {
 
 		public InstrumentMessage(LivingEntity entity, Instrument item) {
 			this.entity = entity.getId();
-			this.item = item.getRegistryName().getPath();
+			this.item = item.getInstrumentName().getPath();
 		}
 
 		@Override
@@ -58,7 +58,7 @@ public class PacketHandler {
 		}
 
 		public SoundEvent getSound() {
-			return Piper.ITEMS.containsKey(item) ? Piper.ITEMS.get(item).getSound() : null;
+			return InstrumentRegistry.isInstrumentRegistered(item) ? InstrumentRegistry.getInstrument(item).getSound() : null;
 		}
 
 		@Override
