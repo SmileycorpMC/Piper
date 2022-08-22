@@ -110,7 +110,7 @@ public class Instrument extends Item {
 	public void buildEntities() {
 		entities.clear();
 		for (ResourceLocation resource : entitiesBuilder) {
-			if (ForgeRegistries.ENTITIES.containsKey(resource)) entities.add(ForgeRegistries.ENTITIES.getValue(resource));
+			if (ForgeRegistries.ENTITY_TYPES.containsKey(resource)) entities.add(ForgeRegistries.ENTITY_TYPES.getValue(resource));
 		}
 	}
 

@@ -1,10 +1,11 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/piper",
   "1.19": {
-	"1.1.2": "port to 1.19"
+	"1.1.2": "port to 1.19",
+	"1.1.2a": "Change to match forge 1.19.1 refactor"
   },
   "promos": {
-    "1.19-latest": "1.1.2",
-    "1.19-recommended": "1.1.2"
+    "1.19-latest": "1.1.2a",
+    "1.19-recommended": "1.1.2a"
   }
 }

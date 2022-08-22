@@ -10,7 +10,7 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
@@ -44,8 +44,8 @@ public class EventListener {
 	}
 
 	@SubscribeEvent
-	public void entityTick(LivingUpdateEvent event) {
-		LivingEntity entity = event.getEntityLiving();
+	public void entityTick(LivingTickEvent event) {
+		LivingEntity entity = event.getEntity();
 		Level level = entity.level;
 		LazyOptional<IMusician> optional = entity.getCapability(Piper.MUSICIAN_CAPABILITY);
 		if (optional.isPresent()) {
