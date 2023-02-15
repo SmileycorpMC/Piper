@@ -15,7 +15,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.19.2-1.1.2a'
+version = '1.19.2-1.1.3b'
 group = 'net.smileycorp.piper' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'Piper'
 
@@ -85,7 +85,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19.2-43.1.2'
+    minecraft 'net.minecraftforge:forge:1.19.3-44.1.16'
 	compileOnly fileTree(dir: 'libs', include: ['*.jar'])
 }
 

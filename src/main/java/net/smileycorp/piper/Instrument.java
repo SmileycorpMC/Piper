@@ -17,7 +17,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -119,7 +118,7 @@ public class Instrument extends Item {
 	}
 
 	public static Instrument fromJson(String name, JsonObject json) {
-		Properties props = new Properties().stacksTo(1).tab(CreativeModeTab.TAB_TOOLS);
+		Properties props = new Properties().stacksTo(1);
 		if (json.has("durability")) props.durability(GsonHelper.getAsInt(json, "durability"));
 		if (json.has("rarity")) {
 			String value = GsonHelper.getAsString(json, "rarity").toUpperCase();
@@ -132,7 +131,7 @@ public class Instrument extends Item {
 			}
 		}
 		Instrument item = new Instrument(props, ModDefinitions.getResource(name));
-		if (json.has("sound")) item.sound = new SoundEvent(new ResourceLocation(GsonHelper.getAsString(json, "sound")));
+		if (json.has("sound")) item.sound = SoundEvent.m_262824_(new ResourceLocation(GsonHelper.getAsString(json, "sound")));
 		if (json.has("cooldown")) item.cooldown = GsonHelper.getAsInt(json, "cooldown");
 		if (json.has("radius")) item.radius = GsonHelper.getAsFloat(json, "radius");
 		if (json.has("enchanted")) item.shiny = GsonHelper.getAsBoolean(json, "enchanted");

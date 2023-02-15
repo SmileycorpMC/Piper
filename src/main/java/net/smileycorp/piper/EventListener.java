@@ -4,21 +4,25 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.registries.RegistryObject;
 import net.smileycorp.followme.common.FollowHandler;
 import net.smileycorp.piper.capability.IInstrument;
 import net.smileycorp.piper.capability.IMusician;
 
-@Mod.EventBusSubscriber(modid = ModDefinitions.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = ModDefinitions.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class EventListener {
 
 	@SubscribeEvent
@@ -41,6 +45,11 @@ public class EventListener {
 		if (stack.getItem() instanceof Instrument) {
 			event.addCapability(ModDefinitions.getResource("instrument"), new IInstrument.Provider());
 		}
+	}
+
+	@SubscribeEvent
+	public void addCreative(CreativeModeTabEvent.BuildContents event) {
+		if (event.getTab() == CreativeModeTabs.f_256869_) for (RegistryObject<Item> item : InstrumentRegistry.ITEMS.values()) event.m_246326_(item.get());
 	}
 
 	@SubscribeEvent
