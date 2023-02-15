@@ -15,7 +15,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.19.2-1.1.3b'
+version = '1.19.3-1.1.2b'
 group = 'net.smileycorp.piper' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'Piper'
 
