@@ -1,8 +1,5 @@
 package net.smileycorp.piper.capability;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
@@ -13,6 +10,9 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.smileycorp.piper.Piper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public interface IMusician {
 
@@ -107,7 +107,7 @@ public interface IMusician {
 			if (user!=null) {
 				for (Tag tag : nbt) {
 					if (tag instanceof IntTag) {
-						followers.add((Mob) user.level.getEntity(((IntTag) tag).getAsInt()));
+						followers.add((Mob) user.level().getEntity(((IntTag) tag).getAsInt()));
 					}
 				}
 			}

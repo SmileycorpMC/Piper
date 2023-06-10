@@ -1,18 +1,18 @@
 package net.smileycorp.piper;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
-
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+
 public class InstrumentRegistry {
 
 	static final Map<String, RegistryObject<Item>> ITEMS = new HashMap<String, RegistryObject<Item>>();
-	static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, ModDefinitions.MODID);
+	static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, Constants.MODID);
 
 	public static void register(String name, Supplier<Instrument> supplier) {
 		try {

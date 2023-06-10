@@ -1,24 +1,22 @@
 package net.smileycorp.piper;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.fml.loading.moddiscovery.ModFile;
+import org.apache.commons.io.FileUtils;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 
-import org.apache.commons.io.FileUtils;
-
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-import net.minecraftforge.fml.loading.FMLLoader;
-import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.fml.loading.moddiscovery.ModFile;
-
 public class ItemLoader {
 
 	public static void loadFiles() {
-		File directory = FMLPaths.GAMEDIR.get().resolve("config").resolve("piper").toFile();
+		File directory = FMLPaths.CONFIGDIR.get().resolve("piper").toFile();
 		if (!(directory.exists() || directory.isDirectory())) {
 			try {
 				createDefaultFiles(directory);
@@ -55,7 +53,6 @@ public class ItemLoader {
 		copyFile(mod, directory, "resources/assets/piper/lang/en_us.json");
 		copyFile(mod, directory, "resources/assets/piper/models/item/pipe.json");
 		copyFile(mod, directory, "resources/assets/piper/sounds/item/pipe0.ogg");
-		copyFile(mod, directory, "resources/assets/piper/sounds/item/pipe1.ogg");
 		copyFile(mod, directory, "resources/assets/piper/textures/item/pipe.png");
 		copyFile(mod, directory, "resources/data/piper/recipes/pipe.json");
 	}
@@ -63,7 +60,7 @@ public class ItemLoader {
 	private static void copyFile(ModFile mod, File directory, String path) throws Exception {
 		File output = new File(directory, path);
 		File dir = output.getParentFile();
-		if (dir!=null)dir.mkdirs();
+		if (dir!=null) dir.mkdirs();
 		FileUtils.copyInputStreamToFile(Files.newInputStream(mod.findResource("config-defaults/"+path), StandardOpenOption.READ), new File(directory, path));
 	}
 

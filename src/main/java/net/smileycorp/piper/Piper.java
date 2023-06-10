@@ -1,9 +1,6 @@
 package net.smileycorp.piper;
 
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -17,12 +14,14 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegistryObject;
 import net.smileycorp.piper.capability.IInstrument;
 import net.smileycorp.piper.capability.IMusician;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-@Mod(value = ModDefinitions.MODID)
-@Mod.EventBusSubscriber(modid = ModDefinitions.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod(value = Constants.MODID)
+@Mod.EventBusSubscriber(modid = Constants.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Piper {
 
-	private static Logger logger = LogManager.getLogger(ModDefinitions.NAME);
+	private static Logger logger = LogManager.getLogger(Constants.NAME);
 
 	public static Capability<IMusician> MUSICIAN_CAPABILITY = CapabilityManager.get(new CapabilityToken<IMusician>(){});
 

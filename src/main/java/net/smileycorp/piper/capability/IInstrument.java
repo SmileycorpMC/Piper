@@ -1,10 +1,5 @@
 package net.smileycorp.piper.capability;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
@@ -18,6 +13,11 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 import net.smileycorp.followme.common.FollowHandler;
 import net.smileycorp.followme.common.ai.FollowUserGoal;
 import net.smileycorp.piper.Piper;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public interface IInstrument {
 

@@ -8,28 +8,20 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent.Context;
-import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
-import net.smileycorp.atlas.api.network.SimpleAbstractMessage;
-import net.smileycorp.atlas.api.network.SimpleMessageDecoder;
-import net.smileycorp.atlas.api.network.SimpleMessageEncoder;
+import net.smileycorp.atlas.api.network.AbstractMessage;
+import net.smileycorp.atlas.api.network.NetworkUtils;
 
 public class PacketHandler {
 
 	public static SimpleChannel NETWORK_INSTANCE;
 
 	public static void initPackets() {
-		NETWORK_INSTANCE = NetworkRegistry.newSimpleChannel(ModDefinitions.getResource("main"), ()-> "1", "1"::equals, "1"::equals);
-		NETWORK_INSTANCE.registerMessage(0, InstrumentMessage.class, new SimpleMessageEncoder<InstrumentMessage>(),
-				new SimpleMessageDecoder<InstrumentMessage>(InstrumentMessage.class), (T, K)-> processInstrumentMessage(T, K.get()));
+		NETWORK_INSTANCE = NetworkUtils.createChannel(Constants.loc("main"));
+		NetworkUtils.registerMessage(NETWORK_INSTANCE, 0, InstrumentMessage.class);
 	}
 
-	public static void processInstrumentMessage(InstrumentMessage message, Context ctx) {
-		ctx.enqueueWork(() ->  DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> ClientHandler.processInstrument(message)));
-		ctx.setPacketHandled(true);
-	}
-
-	public static class InstrumentMessage extends SimpleAbstractMessage {
+	public static class InstrumentMessage extends AbstractMessage {
 
 		public InstrumentMessage() {}
 
@@ -63,6 +55,12 @@ public class PacketHandler {
 
 		@Override
 		public void handle(PacketListener handler) {}
+
+		@Override
+		public void process(Context ctx) {
+			ctx.enqueueWork(() ->  DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> ClientHandler.processInstrument(this)));
+			ctx.setPacketHandled(true);
+		}
 
 	}
 }

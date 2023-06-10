@@ -20,7 +20,7 @@ public class ClientHandler {
 	public static void playInstrument(LivingEntity user, SoundEvent sound) {
 		Minecraft mc = Minecraft.getInstance();
 		Player player = mc.player;
-		Level level = user.level;
+		Level level = user.level();
 		Vec3 facing = user.getLookAngle();
 		double x =  user.getX() + facing.x;
 		double y = user.getY() + user.getEyeHeight() + facing.y;

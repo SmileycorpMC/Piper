@@ -1,11 +1,7 @@
 package net.smileycorp.piper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -29,6 +25,9 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.smileycorp.followme.common.FollowHandler;
 import net.smileycorp.piper.capability.IInstrument;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Instrument extends Item {
 
@@ -130,8 +129,8 @@ public class Instrument extends Item {
 				if (format != null) props.rarity(Rarity.create(value, format));
 			}
 		}
-		Instrument item = new Instrument(props, ModDefinitions.getResource(name));
-		if (json.has("sound")) item.sound = SoundEvent.m_262824_(new ResourceLocation(GsonHelper.getAsString(json, "sound")));
+		Instrument item = new Instrument(props, Constants.loc(name));
+		if (json.has("sound")) item.sound = SoundEvent.createVariableRangeEvent(new ResourceLocation(GsonHelper.getAsString(json, "sound")));
 		if (json.has("cooldown")) item.cooldown = GsonHelper.getAsInt(json, "cooldown");
 		if (json.has("radius")) item.radius = GsonHelper.getAsFloat(json, "radius");
 		if (json.has("enchanted")) item.shiny = GsonHelper.getAsBoolean(json, "enchanted");
