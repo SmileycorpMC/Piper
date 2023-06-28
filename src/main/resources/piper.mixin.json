@@ -4,7 +4,7 @@
 	"compatibilityLevel": "JAVA_16",
 	"refmap": "piper.refmap.json",
 	"mixins": [
-		"MixinPackRepository"
+      	"MixinBuiltInPackSource"
 	],
 	"minVersion": "0.8"
 }

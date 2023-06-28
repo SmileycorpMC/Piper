@@ -130,7 +130,7 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-	implementation fg.deobf('curse.maven:atlaslib-463826:4578792')
+	implementation fg.deobf('curse.maven:atlaslib-463826:4611307')
 	implementation fg.deobf('curse.maven:followme-463841:4578845')
 }
 
