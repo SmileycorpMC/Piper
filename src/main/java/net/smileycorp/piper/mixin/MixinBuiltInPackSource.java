@@ -27,7 +27,6 @@ public class MixinBuiltInPackSource {
 
 	@Inject(at = @At("HEAD"), method = "loadPacks", cancellable = true)
 	private void loadPacks(Consumer<Pack> packConsumer, CallbackInfo callback) {
-		Piper.logInfo("loser alert");
 		Path pack = FMLPaths.GAMEDIR.get().resolve("config").resolve("piper").resolve("resources");
 		net.minecraftforge.resource.PathPackResources resources = new PathPackResources("piper-config", true, pack);
 		packConsumer.accept(Pack.readMetaAndCreate("piper-config", Component.literal("Piper Config"), true,
